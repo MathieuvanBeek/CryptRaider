@@ -42,6 +42,9 @@ private:
 	UPROPERTY(EditAnywhere)
 	float HoldDistance = 200;
 
+	UFUNCTION(BlueprintCallable)
+	void AdjustHoldDistance(float ScrollAmount);
+
 	UPhysicsHandleComponent* GetPhysicsHandle() const;
 
 	bool GetGrabbableInReach(FHitResult& OutHitResult) const;

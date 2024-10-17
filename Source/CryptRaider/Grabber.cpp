@@ -27,16 +27,17 @@ void UGrabber::BeginPlay()
 // Called every frame
 void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+    Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	UPhysicsHandleComponent* PhysicsHandle = GetPhysicsHandle();
-	if(PhysicsHandle && PhysicsHandle->GetGrabbedComponent())
-	{	
-		FVector TargetLocation = GetComponentLocation() + GetForwardVector() * HoldDistance;
-		PhysicsHandle->SetTargetLocationAndRotation(TargetLocation, GetComponentRotation());
-	}
-
+    UPhysicsHandleComponent* PhysicsHandle = GetPhysicsHandle();
+    if(PhysicsHandle && PhysicsHandle->GetGrabbedComponent())
+    {
+        // Update the target location based on the current HoldDistance
+        FVector TargetLocation = GetComponentLocation() + GetForwardVector() * HoldDistance;
+        PhysicsHandle->SetTargetLocationAndRotation(TargetLocation, GetComponentRotation());
+    }
 }
+
 
 void UGrabber::Grab()
 {
@@ -110,3 +111,9 @@ bool UGrabber::GetGrabbableInReach(FHitResult& OutHitResult) const
 		Sphere
 	);
 }
+
+void UGrabber::AdjustHoldDistance(float ScrollAmount)
+{
+	HoldDistance = FMath::Clamp(HoldDistance + ScrollAmount * 10, 100.0f, 250.0f);
+}
+
