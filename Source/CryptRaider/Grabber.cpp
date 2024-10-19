@@ -114,6 +114,6 @@ bool UGrabber::GetGrabbableInReach(FHitResult& OutHitResult) const
 
 void UGrabber::AdjustHoldDistance(float ScrollAmount)
 {
-	HoldDistance = FMath::Clamp(HoldDistance + ScrollAmount * 10, 100.0f, 250.0f);
+	HoldDistance = FMath::Clamp(HoldDistance + ScrollAmount * 10, 50.0f, 250.0f);
 }
 
