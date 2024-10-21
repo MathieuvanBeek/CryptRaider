@@ -98,7 +98,7 @@ bool UGrabber::GetGrabbableInReach(FHitResult& OutHitResult) const
 	FVector Start = GetComponentLocation();
 	FVector End = Start + GetForwardVector() * MaxGrabDistance;
 	// DrawDebugLine(GetWorld(), Start, End, FColor::Red);
-	// DrawDebugSphere(GetWorld(), End, 10, 10, FColor::Blue, false, 5);
+	// DrawDebugSphere(GetWorld(), End, 5, 5, FColor::Blue, false, 5);
 
 	FCollisionShape Sphere = FCollisionShape::MakeSphere(GrabRadius);
 
@@ -115,5 +115,18 @@ bool UGrabber::GetGrabbableInReach(FHitResult& OutHitResult) const
 void UGrabber::AdjustHoldDistance(float ScrollAmount)
 {
 	HoldDistance = FMath::Clamp(HoldDistance + ScrollAmount * 10, 50.0f, 250.0f);
+}
+
+void UGrabber::RotateHeldObject(float PitchInput, float YawInput);
+{
+	UPhysicsHandleComponent* PhysicsHandle = GetPhysicsHandle();
+
+	if (PhysicsHandle && PhysicsHandle->GetGrabbedComponent())
+	{
+		FRotator NewRotation = PhysicsHandle->GetTargetRotation();
+		NewRotation.Pitch += PitchInput;
+        NewRotation.Yaw += YawInput;
+		PhysicsHandle->SetTargetLocationAndRotation(PhysicsHandle->GetTargetLocation(), NewRotation);
+	}
 }
 

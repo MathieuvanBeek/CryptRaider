@@ -45,6 +45,9 @@ private:
 	UFUNCTION(BlueprintCallable)
 	void AdjustHoldDistance(float ScrollAmount);
 
+	UFUNCTION(BlueprintCallable)
+	void RotateHeldObject(float PitchInput, float YawInput);
+
 	UPhysicsHandleComponent* GetPhysicsHandle() const;
 
 	bool GetGrabbableInReach(FHitResult& OutHitResult) const;
