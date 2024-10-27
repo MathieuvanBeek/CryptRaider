@@ -2,6 +2,7 @@
 
 
 #include "Grabber.h"
+#include "UI/PlayerHUD.h"
 #include "Engine/World.h"
 #include "DrawDebugHelpers.h"
 
@@ -29,14 +30,31 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 {
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+    FHitResult HitResult;
+    bool bIsItemInReach = GetGrabbableInReach(HitResult);
+
+    APlayerHUD* PlayerHUD = Cast<APlayerHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
+    if (PlayerHUD)
+    {
+        if (bIsItemInReach)
+        {
+            PlayerHUD->ShowCrosshair(true);
+        }
+        else
+        {
+            PlayerHUD->ShowCrosshair(false);
+        }
+    }
+
+    // Existing code to update the held object’s location
     UPhysicsHandleComponent* PhysicsHandle = GetPhysicsHandle();
     if(PhysicsHandle && PhysicsHandle->GetGrabbedComponent())
     {
-        // Update the target location based on the current HoldDistance
         FVector TargetLocation = GetComponentLocation() + GetForwardVector() * HoldDistance;
         PhysicsHandle->SetTargetLocationAndRotation(TargetLocation, GetComponentRotation());
     }
 }
+
 
 
 void UGrabber::Grab()
