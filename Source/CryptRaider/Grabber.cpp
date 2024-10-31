@@ -2,7 +2,6 @@
 
 
 #include "Grabber.h"
-#include "UI/PlayerHUD.h"
 #include "Engine/World.h"
 #include "DrawDebugHelpers.h"
 
@@ -32,19 +31,6 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 
     FHitResult HitResult;
     bool bIsItemInReach = GetGrabbableInReach(HitResult);
-
-    APlayerHUD* PlayerHUD = Cast<APlayerHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
-    if (PlayerHUD)
-    {
-        if (bIsItemInReach)
-        {
-            PlayerHUD->ShowCrosshair(true);
-        }
-        else
-        {
-            PlayerHUD->ShowCrosshair(false);
-        }
-    }
 
     // Existing code to update the held object’s location
     UPhysicsHandleComponent* PhysicsHandle = GetPhysicsHandle();
@@ -135,16 +121,4 @@ void UGrabber::AdjustHoldDistance(float ScrollAmount)
 	HoldDistance = FMath::Clamp(HoldDistance + ScrollAmount * 10, 50.0f, 250.0f);
 }
 
-void UGrabber::RotateHeldObject(float PitchInput, float YawInput);
-{
-	UPhysicsHandleComponent* PhysicsHandle = GetPhysicsHandle();
-
-	if (PhysicsHandle && PhysicsHandle->GetGrabbedComponent())
-	{
-		FRotator NewRotation = PhysicsHandle->GetTargetRotation();
-		NewRotation.Pitch += PitchInput;
-        NewRotation.Yaw += YawInput;
-		PhysicsHandle->SetTargetLocationAndRotation(PhysicsHandle->GetTargetLocation(), NewRotation);
-	}
-}
 
