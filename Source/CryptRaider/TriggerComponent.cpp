@@ -28,12 +28,10 @@ void UTriggerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
         }
         Actor->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);
         Mover->SetShouldMove(true);
-        UE_LOG(LogTemp, Display, TEXT("Unlocking..."));
     }
     else
     {
         Mover->SetShouldMove(false);
-        UE_LOG(LogTemp, Display, TEXT("Relocking..."));
     }
 }
 
